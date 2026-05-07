@@ -1,0 +1,23 @@
+{
+  "name": "@vendo/bots",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p .",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "deploy": "medplum bot deploy"
+  },
+  "dependencies": {
+    "@medplum/core": "^3.2.0",
+    "@medplum/fhirtypes": "^3.2.0"
+  },
+  "devDependencies": {
+    "@medplum/cli": "^3.2.0",
+    "@medplum/mock": "^3.2.0",
+    "@types/react": "^19.0.0",
+    "vitest": "^2.1.4"
+  }
+}

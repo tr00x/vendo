@@ -1,0 +1,58 @@
+name: vendo-dev
+
+services:
+  postgres:
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_USER: medplum
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-medplum_local}
+      POSTGRES_DB: medplum
+    volumes: ["pg-data:/var/lib/postgresql/data"]
+    # Postgres + Redis intentionally NOT published to host: only Medplum
+    # needs them, and exposing them clashes with locally-running DBs.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medplum"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7.4-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  medplum-server:
+    image: medplum/medplum-server:5.1.9
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis:    { condition: service_healthy }
+    command: ["file:/etc/medplum.config.json"]
+    volumes:
+      - ./medplum.config.json:/etc/medplum.config.json:ro
+      - medplum-binary:/app/binary
+    ports: ["8103:8103"]
+    healthcheck:
+      test:
+        - "CMD"
+        - "node"
+        - "-e"
+        - "fetch('http://localhost:8103/healthcheck').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  medplum-app:
+    image: medplum/medplum-app:5.1.9
+    depends_on:
+      medplum-server: { condition: service_healthy }
+    environment:
+      MEDPLUM_BASE_URL: http://localhost:8103/
+    ports: ["8104:3000"]
+
+volumes:
+  pg-data:
+  medplum-binary:

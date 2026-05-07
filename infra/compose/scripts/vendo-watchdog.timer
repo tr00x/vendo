@@ -1,0 +1,16 @@
+[Unit]
+Description=Vendo prod watchdog timer (every 60s)
+Requires=vendo-watchdog.service
+
+[Timer]
+# First fire 60s after boot so all containers have a chance to settle.
+OnBootSec=60s
+# Then every 60s. A persistent timer survives reboots and resumes the
+# regular cadence; we don't need calendar-based scheduling here.
+OnUnitActiveSec=60s
+AccuracySec=5s
+Unit=vendo-watchdog.service
+Persistent=true
+
+[Install]
+WantedBy=timers.target

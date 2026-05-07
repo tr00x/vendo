@@ -1,0 +1,22 @@
+{
+  "port": 8103,
+  "baseUrl": "REPLACE_MEDPLUM_BASE_URL",
+  "appBaseUrl": "REPLACE_APP_BASE_URL",
+  "issuer": "REPLACE_MEDPLUM_BASE_URL",
+  "audience": "REPLACE_MEDPLUM_BASE_URL",
+  "binaryStorage": "file:./binary",
+  "storageBaseUrl": "REPLACE_MEDPLUM_BASE_URL/storage/",
+  "supportEmail": "REPLACE_SUPPORT_EMAIL",
+  "signingKey": "REPLACE_BY_GEN_KEYS",
+  "signingKeyId": "REPLACE_BY_GEN_KEYS",
+  "signingKeyPassphrase": "REPLACE_BY_GEN_KEYS",
+  "database": {
+    "host": "postgres",
+    "port": 5432,
+    "dbname": "medplum",
+    "username": "medplum",
+    "password": "REPLACE_PG_PASSWORD",
+    "ssl": false
+  },
+  "redis": { "host": "redis", "port": 6379 }
+}

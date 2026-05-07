@@ -1,0 +1,20 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "ESNext",
+    "baseUrl": "../../..",
+    "paths": {
+      "@portal/*": ["apps/portal/src/*"],
+      "@/*": ["apps/portal/src/*"]
+    },
+    "allowImportingTsExtensions": false
+  },
+  "include": [
+    "src/**/*",
+    "../../../apps/portal/src/lib/fhir/bundle.ts",
+    "../../../apps/portal/src/lib/fhir/schemas.ts",
+    "../../../apps/portal/src/lib/fhir/insurance-extension.ts",
+    "../../../apps/portal/src/lib/clinical/durations.ts"
+  ]
+}

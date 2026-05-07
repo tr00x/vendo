@@ -1,0 +1,8 @@
+{
+  "bots": [
+    { "name": "notify-new-referral", "id": "notify-new-referral", "source": "src/notify-new-referral.ts" },
+    { "name": "notify-appt-booked", "id": "notify-appt-booked", "source": "src/notify-appt-booked.ts" },
+    { "name": "notify-appt-cancelled", "id": "notify-appt-cancelled", "source": "src/notify-appt-cancelled.ts" },
+    { "name": "notify-images-ready", "id": "notify-images-ready", "source": "src/notify-images-ready.ts" }
+  ]
+}

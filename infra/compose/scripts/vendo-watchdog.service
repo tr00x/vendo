@@ -1,0 +1,23 @@
+[Unit]
+Description=Vendo prod watchdog (auto-restart unhealthy services)
+Documentation=https://github.com/tr00x/vendo
+# Don't fight Docker on first boot — wait for it.
+After=docker.service network-online.target
+Wants=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/vendo/infra/compose/scripts/watchdog.sh
+# The script handles its own logging to /var/log/vendo-watchdog.log
+# AND syslog. Let stderr fall through to journal as a backup.
+StandardOutput=journal
+StandardError=journal
+User=root
+Nice=10
+# Hard ceiling so a hung curl can't pin a timer slot. The script's own
+# per-probe timeouts already enforce shorter waits; this is defence
+# in depth.
+TimeoutStartSec=2min
+
+[Install]
+WantedBy=multi-user.target

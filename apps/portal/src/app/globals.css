@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  /* RGB channels — let Tailwind's rgb(var() / <alpha>) opacity modifiers work. */
+  --bone-rgb: 247 247 248;
+  --paper-rgb: 255 255 255;
+  --ink-rgb: 14 14 16;
+  --graphite-rgb: 58 58 64;
+  --smoke-rgb: 110 110 118;
+  --ash-rgb: 161 161 170;
+  --hairline-rgb: 228 228 231;
+  --rule-rgb: 212 212 216;
+  --cta-rgb: 14 14 16;       /* dark CTA surface — same as light-mode ink */
+  --hatch: rgba(100, 116, 139, 0.22);  /* slate-500 stripe — visible on light cells */
+  --accent-rgb: 59 67 224;
+  --accent-50-rgb: 238 238 253;
+  --accent-700-rgb: 45 52 189;
+  /* Hex fallbacks for legacy globals.css refs that don't go through Tailwind. */
+  --bone: #F7F7F8;
+  --paper: #FFFFFF;
+  --ink: #0E0E10;
+  --graphite: #3A3A40;
+  --smoke: #6E6E76;
+  --hairline: #E4E4E7;
+  --rule: #D4D4D8;
+  --accent: #3B43E0;
+  --accent-50: #EEEEFD;
+  /* Legacy brand vars kept for any holdouts that still reference them. */
+  --brand: #3B43E0;
+  --brand-50: #EEEEFD;
+  --brand-100: #DCDDFB;
+  --brand-600: #3B43E0;
+  --brand-700: #2D34BD;
+}
+
+/* Dark theme — flip the neutrals. Ink becomes bg, bone becomes text;
+   the gray ramp inverts so paper > bone > graphite > smoke > ash all keep
+   their semantic meaning (paper = "raised surface", ink = "primary text"). */
+.dark {
+  color-scheme: dark;
+  --bone-rgb: 12 12 14;       /* page background — near-black */
+  --paper-rgb: 22 22 26;      /* raised surfaces — one notch lighter */
+  --ink-rgb: 240 240 242;     /* primary text — near-white */
+  --graphite-rgb: 200 200 206;/* secondary text */
+  --smoke-rgb: 140 140 148;   /* tertiary text */
+  --ash-rgb: 90 90 98;        /* placeholder / disabled */
+  --hairline-rgb: 38 38 44;   /* dividers */
+  --rule-rgb: 50 50 56;       /* stronger dividers */
+  --cta-rgb: 38 38 46;        /* CTA surface — slightly elevated dark, never white */
+  --hatch: rgba(148, 163, 184, 0.28); /* slate-400 stripe — soft cool tint on dark */
+  --accent-rgb: 107 113 240;
+  --accent-50-rgb: 26 26 46;
+  --accent-700-rgb: 142 148 245;
+  --bone: #0C0C0E;
+  --paper: #16161A;
+  --ink: #F0F0F2;
+  --graphite: #C8C8CE;
+  --smoke: #8C8C94;
+  --hairline: #26262C;
+  --rule: #323238;
+  --accent: #6B71F0;          /* lifted accent for contrast on dark */
+  --accent-50: #1A1A2E;
+  --brand: #6B71F0;
+  --brand-50: #1A1A2E;
+}
+
+@layer base {
+  html {
+    zoom: 1.15;
+  }
+  body {
+    font-feature-settings: 'cv11', 'ss01';
+    background: var(--bone);
+    color: var(--ink);
+    letter-spacing: -0.011em;
+  }
+  * { -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--accent); color: white; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md bg-cta px-3.5 py-2 text-[13px] font-medium tracking-tightish text-white transition hover:bg-cta/85 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md border border-hairline bg-paper px-3.5 py-2 text-[13px] font-medium tracking-tightish text-ink transition hover:border-ink/40 hover:bg-bone focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-2.5 py-1.5 text-[13px] font-medium text-graphite transition hover:bg-hairline/60 hover:text-ink;
+  }
+
+  .input {
+    @apply block w-full rounded-md border border-hairline bg-paper px-3 py-2 text-sm text-ink transition placeholder:text-ash focus:border-ink/30 focus:outline-none focus:ring-2 focus:ring-ink/5;
+  }
+  .input-error {
+    @apply border-signal-stop focus:border-signal-stop focus:ring-signal-stop/10;
+  }
+
+  .card {
+    @apply rounded-md border border-hairline bg-paper;
+  }
+
+  .label {
+    @apply mb-1.5 block text-left text-[12.5px] font-medium text-graphite;
+  }
+  .help {
+    @apply mt-1 text-left text-[11.5px] text-smoke;
+  }
+  .err {
+    @apply mt-1 flex items-center gap-1 text-[11.5px] text-signal-stop;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded border border-hairline bg-paper px-2 py-0.5 text-[11px] font-medium text-graphite;
+  }
+
+  .eyebrow {
+    @apply text-[11px] font-medium uppercase tracking-microcaps text-smoke;
+  }
+}
+
+@layer utilities {
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--hairline) 0px, var(--rule) 200px, var(--hairline) 400px);
+  background-size: 1000px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
